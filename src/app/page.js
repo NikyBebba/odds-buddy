@@ -6,6 +6,7 @@ import HelpModal from '@/components/HelpModal';
 import VibesCheck from '@/components/VibesCheck';
 import ExtraFun from '@/components/ExtraFun';
 import AlertSystem from '@/components/AlertSystem';
+import MatchVibesHub from '@/components/MatchVibesHub';
 import { calculateBuddyRating, getH2HHistory, generateMatchSummary, getSimonettaMeter } from '@/lib/analytics';
 
 const DOMESTIC_LEAGUES = [
@@ -90,7 +91,6 @@ export default function Home() {
   const activeBtnBg = isGalatone ? 'bg-purple-600 text-slate-950 shadow-purple-500/20' : 'bg-emerald-500 text-slate-950 shadow-emerald-500/20';
   const borderPrimary = isGalatone ? 'border-purple-500/40' : 'border-emerald-500/40';
 
-  // LANDING PAGE CON OROSCOPO E DOPPIO ACCESSO
   if (!hasEntered) {
     return (
       <main className="min-h-screen bg-slate-950 text-slate-100 flex flex-col items-center justify-center p-6 font-sans relative overflow-hidden">
@@ -113,7 +113,7 @@ export default function Home() {
           <ExtraFun />
 
           <p className="text-xs text-slate-300 font-medium pt-2">
-            Scegli da quale varco vuoi accedere alla dashboard:
+            Vita mia, scegli da quale varco vuoi accedere alla dashboard:
           </p>
 
           <div className="space-y-2">
@@ -142,7 +142,6 @@ export default function Home() {
     );
   }
 
-  // DASHBOARD PRINCIPALE
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100 p-4 md:p-8 font-sans">
       <header className="max-w-5xl mx-auto mb-6 text-center flex flex-col items-center relative">
@@ -165,10 +164,8 @@ export default function Home() {
         </div>
       </header>
 
-      {/* Sistema Allarmi Dinamico */}
       <AlertSystem />
 
-      {/* Selector Competizioni */}
       <div className="max-w-5xl mx-auto mb-6 space-y-4">
         <div className="flex flex-col items-center gap-2">
           <span className="text-xs uppercase tracking-wider font-semibold text-slate-500">Campionati</span>
@@ -331,37 +328,47 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Navigazione tra Tab */}
+            {/* Navigazione tra Tab (Incluso Extra & Food) */}
             <div className="flex flex-wrap gap-2 mb-6 border-b border-slate-800 pb-2 justify-center">
               <button
                 onClick={() => setActiveTab('simonetta')}
-                className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+                className={`px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
                   activeTab === 'simonetta'
                     ? `${activeBtnBg} font-bold shadow-md`
                     : 'bg-slate-950 text-slate-400 hover:text-slate-200'
                 }`}
               >
-                ✨ Simonetta Meter
+                ✨ Simonetta
               </button>
               <button
                 onClick={() => setActiveTab('general')}
-                className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+                className={`px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
                   activeTab === 'general'
                     ? `${activeBtnBg} font-bold shadow-md`
                     : 'bg-slate-950 text-slate-400 hover:text-slate-200'
                 }`}
               >
-                📊 Quadro Generale
+                📊 Quadro
               </button>
               <button
                 onClick={() => setActiveTab('history')}
-                className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+                className={`px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
                   activeTab === 'history'
                     ? `${activeBtnBg} font-bold shadow-md`
                     : 'bg-slate-950 text-slate-400 hover:text-slate-200'
                 }`}
               >
-                🕒 Ultime Partite & H2H
+                🕒 H2H & Ultime
+              </button>
+              <button
+                onClick={() => setActiveTab('extra')}
+                className={`px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                  activeTab === 'extra'
+                    ? `${activeBtnBg} font-bold shadow-md`
+                    : 'bg-slate-950 text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                🪩 Extra & Food
               </button>
             </div>
 
@@ -417,7 +424,7 @@ export default function Home() {
                     📝 Quadro Neutrale di Odds Buddy
                   </h4>
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    {generateMatchSummary(selectedMatch.homeTeam, selectedMatch.analytics?.avgGoals)}
+                    {generateMatchSummary(selectedMatch.homeTeam, selectedMatch.awayTeam, selectedMatch.analytics?.avgGoals)}
                   </p>
                   <p className="text-[11px] text-slate-500 italic pt-1">
                     * Ricorda: le statistiche raccontano il passato, ma nel calcio il verdetto spetta solo al campo!
@@ -522,6 +529,9 @@ export default function Home() {
                 </div>
               </div>
             )}
+
+            {/* TAB 4: Extra & Food (DJ Set e Sondaggino Lattosio/Carote) */}
+            {activeTab === 'extra' && <MatchVibesHub />}
 
             <button
               onClick={() => setSelectedMatch(null)}
