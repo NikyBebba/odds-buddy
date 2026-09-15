@@ -59,7 +59,7 @@ export function getSimonettaMeter(homeTeam, awayTeam) {
   } else if (Math.abs(posDiff) > 8) {
     gasaLevel = 'Gasa solo se c\'è il trappolone ⚠️';
   } else if (posHome > 12 && posAway > 12) {
-    gasaLevel = 'Partitaccia a Campo da Longo per non retrocedere! 🎪';
+    gasaLevel = 'Partitaccia a Campo di Longo per non retrocedere! 🎪';
   } else {
     gasaLevel = 'Partitina che gasa il giusto, per dio! 🔥';
   }
@@ -67,9 +67,9 @@ export function getSimonettaMeter(homeTeam, awayTeam) {
   if (posDiff <= -6) {
     verdict = `Per dio! ${homeTeam.name} (${posHome}°) sta facendo un gran bel campionatone in casa. ${awayTeam.name} (${posAway}°) rischia una ciucciata pesante fuori casa se non alza il muro! LCT! SÌ!!!! 🔥`;
   } else if (posDiff >= 6) {
-    verdict = `Angu de! ${awayTeam.name} (${posAway}°) arrives da squadrone in casa di ${homeTeam.name} (${posHome}°). Occhio però che a Campo da Longo i pronostici facili regalano brutte ciucciature! 🍭`;
+    verdict = `Angu de! ${awayTeam.name} (${posAway}°) arrives da squadrone in casa di ${homeTeam.name} (${posHome}°). Occhio però che a Campo di Longo i pronostici facili regalano brutte ciucciature! 🍭`;
   } else {
-    verdict = `E la madonna che partitona equilibrata! ${homeTeam.name} e ${awayTeam.name} sono due squadre vicinissime. Qui chi fa la cavolata a Campo da Longo si prende una ciuccia clamorosa! SÌ!!!! ⚖️💥`;
+    verdict = `E la madonna che partitona equilibrata! ${homeTeam.name} e ${awayTeam.name} sono due squadre vicinissime. Qui chi fa la cavolata a Campo di Longo si prende una ciuccia clamorosa! SÌ!!!! ⚖️💥`;
   }
 
   return { homeAuraStatus, awayAuraStatus, gasaLevel, verdict };

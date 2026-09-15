@@ -5,7 +5,7 @@ import { useState } from 'react';
 const TAROT_CARDS = [
   { title: '🔮 La Carta del Trappolone', desc: 'Oggi lo squadrone blasonato rischia una ciucciata storica. Fidati solo del campo!' },
   { title: '👑 L\'Imperatore dell\'Aura', desc: 'Aura Farming a livelli mai visti prima. Vittoria schiacciante in arrivo!' },
-  { title: '🎪 Il Matto a Campo da Longo', desc: 'Partita caotica, autoreti assurde e Var protagonista. SÌ!!!!' },
+  { title: '🎪 Il Matto a Campo di Longo', desc: 'Partita caotica, autoreti assurde e Var protagonista. SÌ!!!!' },
   { title: '🍷 La Temperanza di Sannicola', desc: 'Pareggino scritto nei tarocchi. Prendi le patatine e rilassati.' },
 ];
 

@@ -31,7 +31,7 @@ export default function MatchVibesHub() {
       <div className="bg-slate-950 p-4 rounded-xl border border-purple-500/30 space-y-3">
         <div className="flex items-center justify-between">
           <h4 className="text-xs uppercase tracking-wider font-bold text-purple-400">
-            🎧 DJ Set nel Campo da Longo
+            🎧 DJ Set nel Campo di Longo
           </h4>
           <span className="text-[10px] bg-purple-500/10 text-purple-300 border border-purple-500/30 px-2 py-0.5 rounded-full font-mono">
             {isPlaying ? '🔴 IN ONDA' : '⏸️ PAUSA'}

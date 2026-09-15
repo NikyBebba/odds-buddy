@@ -5,7 +5,7 @@ import { useState } from 'react';
 const ALARMS = [
   "🚨 ATTENZIONE: Simonetta ti sta tracciando su LifeMadonna369! Metti il telefono in modalità aereo! 📱💥",
   "🕶️ ALLARME ROSSO: Robertone ha messo gli occhiali veloci! La situazione sta precipitando alla velocità della luce! ⚡",
-  "🔍 ALLERTA MASSIMA: Giovanni sta tornando e sta cercando i ladri nel Campo da Longo! Mettetevi al riparo! 🏃‍♂️💨",
+  "🔍 ALLERTA MASSIMA: Giovanni sta tornando e sta cercando i ladri nel Campo di Longo! Mettetevi al riparo! 🏃‍♂️💨",
   "📢 EMERGENZA: Lorenza sta gridando! Corri subito ad aiutarla! 🆘🔥",
   "👑 SHHH: Cocula Piccolo Principe sta dormendo! Non fare rumore! 🤫😴",
 ];
