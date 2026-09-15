@@ -1,76 +1,56 @@
 export function calculateBuddyRating(homeTeam, awayTeam) {
-  if (!homeTeam.position || homeTeam.position === 'N/D') return 70;
-
-  const posHome = parseInt(homeTeam.position) || 10;
-  const posAway = parseInt(awayTeam.position) || 10;
-  const posDiff = Math.abs(posHome - posAway);
-
-  let rating = 50 + posDiff * 2.5;
-  if (posHome < posAway) rating += 5;
-
-  return Math.min(Math.max(Math.round(rating), 35), 98);
+  const seed = (homeTeam.name + awayTeam.name).length;
+  return 50 + (seed * 7) % 45;
 }
 
 export function getH2HHistory(homeName, awayName, matchId) {
-  const years = [2024, 2023, 2023];
   return [
-    { season: years[0], home: homeName, score: '2 - 1', away: awayName },
-    { season: years[1], home: awayName, score: '1 - 1', away: homeName },
-    { season: years[2], home: homeName, score: '3 - 0', away: awayName },
+    { season: '2024/25', home: homeName, score: '2 - 1', away: awayName },
+    { season: '2023/24', home: awayName, score: '1 - 1', homeTeam: awayName },
+    { season: '2022/23', home: homeName, score: '0 - 2', away: awayName },
+    { season: '2021/22', home: awayName, score: '3 - 2', away: homeName },
   ];
 }
 
 export function generateMatchSummary(homeTeam, awayTeam, avgGoals) {
-  const posHome = parseInt(homeTeam.position) || 10;
-  const posAway = parseInt(awayTeam.position) || 10;
-
-  if (posHome < posAway && (posAway - posHome) > 5) {
-    return `${homeTeam.name} si presenta a questa sfida in una posizione di classifica più avanzata (${posHome}° contro ${posAway}°). Tuttavia, nel calcio ogni partita ha una storia a sé e le motivazioni di ${awayTeam.name} o eventuali episodi in campo possono ribaltare qualsiasi dato teorico.`;
-  } else if (posAway < posHome && (posHome - posAway) > 5) {
-    return `${awayTeam.name} vanta una classifica superiore (${posAway}° vs ${posHome}°), ma giocare in trasferta presenta sempre delle insidie. ${homeTeam.name} spinta dal proprio pubblico ha i dati e l'organico per mettere in difficoltà chiunque.`;
-  } else {
-    return `Scontro diretto tra due formazioni distanziate da pochi punti in classifica (${posHome}° vs ${posAway}°). I numeri indicano grande equilibrio, lasciando aperto il campo a qualsiasi tipo di scenario o sorpresa.`;
-  }
+  const homePos = homeTeam.position && homeTeam.position !== 'N/D' ? `${homeTeam.position}° in classifica` : 'posizione ignota';
+  const awayPos = awayTeam.position && awayTeam.position !== 'N/D' ? `${awayTeam.position}° in classifica` : 'posizione ignota';
+  
+  return `Analisi tattica per ${homeTeam.name} (${homePos}) contro ${awayTeam.name} (${awayPos}). Le statistiche indicano una media reti stimata di ${avgGoals || '2.5'}. Attenzione ai cali di concentrazione a centrocampo: qui vince chi ha più fame e gestisce meglio la pressione!`;
 }
 
-// Logica Valeria Meter (corretta!)
 export function getSimonettaMeter(homeTeam, awayTeam) {
-  const posHome = parseInt(homeTeam.position) || 10;
-  const posAway = parseInt(awayTeam.position) || 10;
-  const posDiff = posHome - posAway;
+  const homeScore = homeTeam.position && homeTeam.position !== 'N/D' ? (20 - parseInt(homeTeam.position)) : 10;
+  const awayScore = awayTeam.position && awayTeam.position !== 'N/D' ? (20 - parseInt(awayTeam.position)) : 10;
 
-  let homeAuraStatus = '';
-  let awayAuraStatus = '';
-  let gasaLevel = '';
-  let verdict = '';
+  let homeAuraStatus = "Aura Neutra 😶";
+  let awayAuraStatus = "Aura Neutra 😶";
 
-  if (posHome <= 3) homeAuraStatus = 'Aura Gigantone (+1000 Aura) 👑';
-  else if (posHome <= 8) homeAuraStatus = 'Aura Farming a manetta 🌾';
-  else if (posHome <= 14) homeAuraStatus = 'Aura un po\' così ⚖️';
-  else homeAuraStatus = 'Aura Sotto Zero 🥶 (LCT)';
+  if (homeScore > 12) homeAuraStatus = "Aura Potente & Farming Attivo ✨";
+  else if (homeScore < 8) homeAuraStatus = "Rischio Ciucciata Storica 🤡";
 
-  if (posAway <= 3) awayAuraStatus = 'Aura Gigantone (+1000 Aura) 👑';
-  else if (posAway <= 8) awayAuraStatus = 'Aura Farming a manetta 🌾';
-  else if (posAway <= 14) awayAuraStatus = 'Aura un po\' così ⚖️';
-  else awayAuraStatus = 'Aura Sotto Zero 🥶 (LCT)';
+  if (awayScore > 12) awayAuraStatus = "Aura Potente & Farming Attivo ✨";
+  else if (awayScore < 8) awayAuraStatus = "Rischio Ciucciata Storica 🤡";
 
-  if (posHome <= 5 && posAway <= 5) {
-    gasaLevel = 'Partitona da infarto! SÌ!!!! 🚀';
-  } else if (Math.abs(posDiff) > 8) {
-    gasaLevel = 'Gasa solo se c\'è il trappolone ⚠️';
-  } else if (posHome > 12 && posAway > 12) {
-    gasaLevel = 'Partitaccia a Campo di Longo per non retrocedere! 🎪';
-  } else {
-    gasaLevel = 'Partitina che gasa il giusto, per dio! 🔥';
+  const diff = Math.abs(homeScore - awayScore);
+  let gasaLevel = "🔥 Partita da tripla, tensione alle stelle!";
+  if (diff > 5) {
+    gasaLevel = "⚡ Scontro impari: qualcuno rischia una stangata memorabile.";
   }
 
-  if (posDiff <= -6) {
-    verdict = `Per dio! ${homeTeam.name} (${posHome}°) sta facendo un gran bel campionatone in casa. ${awayTeam.name} (${posAway}°) rischia una ciucciata pesante fuori casa se non alza il muro! LCT! SÌ!!!! 🔥`;
-  } else if (posDiff >= 6) {
-    verdict = `Angu de! ${awayTeam.name} (${posAway}°) arrives da squadrone in casa di ${homeTeam.name} (${posHome}°). Occhio però che a Campo di Longo i pronostici facili regalano brutte ciucciature! 🍭`;
+  let verdict = "";
+  if (homeScore > awayScore) {
+    verdict = `I dati pendono verso ${homeTeam.name}: gestione pulita e controllo del centrocampo. ${awayTeam.name} dovrà sudare sette camicie per evitare la figuraccia a Campo di Longo!`;
+  } else if (awayScore > homeScore) {
+    verdict = `Attenzione alla mossa da trasferta di ${awayTeam.name}! ${homeTeam.name} rischia grosso se sottovaluta gli spazi stretti. Verdetto: partita apertissima e caotica!`;
   } else {
-    verdict = `E la madonna che partitona equilibrata! ${homeTeam.name} e ${awayTeam.name} sono due squadre vicinissime. Qui chi fa la cavolata a Campo di Longo si prende una ciuccia clamorosa! SÌ!!!! ⚖️💥`;
+    verdict = `Equilibrio totale nei radar della Gara di Aura. Le due squadre si annulleranno a vicenda tra errori arbitrali e tacchetti piantati nel prato. SÌ!!!!`;
   }
 
-  return { homeAuraStatus, awayAuraStatus, gasaLevel, verdict };
+  return {
+    homeAuraStatus,
+    awayAuraStatus,
+    gasaLevel,
+    verdict
+  };
 }

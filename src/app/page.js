@@ -351,7 +351,7 @@ export default function Home() {
                     : 'bg-slate-950 text-slate-400 hover:text-slate-200'
                 }`}
               >
-                ✨ Simonetta
+                ✨ Gara di Aura
               </button>
               <button
                 onClick={() => setActiveTab('general')}
