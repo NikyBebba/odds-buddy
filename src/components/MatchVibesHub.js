@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 const TRACKS = [
-  "🎶 TRACCIA 1: Cassa Dritta, Gamba Aperte",
+  "🎶 TRACCIA 1: Cassa Dritta, Gambe Aperte",
   "🎧 TRACCIA 2: Techno di Sannicola",
   "🪩 TRACCIA 3: Lo Sguardo di Simonetta (Slow Bass)",
   "🔥 TRACCIA 4: Cartucce Anthem",
