@@ -85,24 +85,27 @@ export default function Home() {
     return homeName.includes(query) || awayName.includes(query);
   });
 
+  // Gestione dinamica dei 3 temi (Sannicola / Galatone / Roma)
   const isGalatone = theme === 'galatone';
-  const primaryText = isGalatone ? 'text-purple-400' : 'text-emerald-400';
-  const primaryBg = isGalatone ? 'bg-purple-600 hover:bg-purple-500' : 'bg-emerald-500 hover:bg-emerald-400';
-  const activeBtnBg = isGalatone ? 'bg-purple-600 text-slate-950 shadow-purple-500/20' : 'bg-emerald-500 text-slate-950 shadow-emerald-500/20';
-  const borderPrimary = isGalatone ? 'border-purple-500/40' : 'border-emerald-500/40';
+  const isRoma = theme === 'roma';
+
+  const primaryText = isRoma ? 'text-amber-400' : isGalatone ? 'text-purple-400' : 'text-emerald-400';
+  const primaryBg = isRoma ? 'bg-amber-500 hover:bg-amber-400 text-slate-950' : isGalatone ? 'bg-purple-600 hover:bg-purple-500 text-slate-100' : 'bg-emerald-500 hover:bg-emerald-400 text-slate-950';
+  const activeBtnBg = isRoma ? 'bg-amber-500 text-slate-950 shadow-amber-500/20' : isGalatone ? 'bg-purple-600 text-slate-950 shadow-purple-500/20' : 'bg-emerald-500 text-slate-950 shadow-emerald-500/20';
+  const borderPrimary = isRoma ? 'border-amber-500/40' : isGalatone ? 'border-purple-500/40' : 'border-emerald-500/40';
 
   if (!hasEntered) {
     return (
       <main className="min-h-screen bg-slate-950 text-slate-100 flex flex-col items-center justify-center p-6 font-sans relative overflow-hidden">
-        <div className="absolute inset-0 bg-emerald-500/5 blur-3xl rounded-full pointer-events-none"></div>
+        <div className="absolute inset-0 bg-amber-500/5 blur-3xl rounded-full pointer-events-none"></div>
 
         <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-3xl p-6 text-center shadow-2xl relative z-10 space-y-5">
-          <div className="w-16 h-16 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center text-3xl mx-auto shadow-inner">
+          <div className="w-16 h-16 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-center justify-center text-3xl mx-auto shadow-inner">
             ⚽
           </div>
 
           <div className="space-y-1">
-            <h1 className="text-2xl font-extrabold tracking-tight text-emerald-400">
+            <h1 className="text-2xl font-extrabold tracking-tight text-amber-400">
               Odds Buddy
             </h1>
             <p className="text-lg font-bold text-slate-100">
@@ -135,6 +138,16 @@ export default function Home() {
               className="w-full bg-purple-600 hover:bg-purple-500 text-slate-100 font-extrabold py-3 rounded-2xl transition-all shadow-lg shadow-purple-600/20 text-xs tracking-wide"
             >
               🗿 Entra da Galatone
+            </button>
+
+            <button
+              onClick={() => {
+                setTheme('roma');
+                setHasEntered(true);
+              }}
+              className="w-full bg-gradient-to-r from-red-700 to-amber-600 hover:from-red-600 hover:to-amber-500 text-slate-100 font-extrabold py-3 rounded-2xl transition-all shadow-lg shadow-red-900/40 text-xs tracking-wide border border-amber-500/30"
+            >
+              🐺 Entra da Roma
             </button>
           </div>
         </div>
@@ -328,7 +341,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Navigazione tra Tab (Incluso Extra & Food) */}
+            {/* Navigazione tra Tab */}
             <div className="flex flex-wrap gap-2 mb-6 border-b border-slate-800 pb-2 justify-center">
               <button
                 onClick={() => setActiveTab('simonetta')}
@@ -530,7 +543,7 @@ export default function Home() {
               </div>
             )}
 
-            {/* TAB 4: Extra & Food (DJ Set e Sondaggino Lattosio/Carote) */}
+            {/* TAB 4: Extra & Food */}
             {activeTab === 'extra' && <MatchVibesHub />}
 
             <button
