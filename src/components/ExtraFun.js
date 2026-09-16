@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import LegendsQuiz from '@/components/LegendsQuiz';
 
 const TAROT_CARDS = [
   { title: '🔮 La Carta del Trappolone', desc: 'Oggi lo squadrone blasonato rischia una ciucciata storica. Fidati solo del campo!' },
@@ -20,7 +21,7 @@ export default function ExtraFun() {
   return (
     <div className="bg-slate-950 p-4 rounded-2xl border border-purple-500/30 text-center space-y-3">
       <h4 className="text-xs uppercase tracking-wider font-bold text-purple-400">
-        🔮 L'Oroscopo Calcistico del Giorno
+        🔮 L&apos;Oroscopo Calcistico del Giorno
       </h4>
       <p className="text-xs text-slate-400">
         Pesca una carta prima di analizzare i dati per scoprire che aria tira oggi!
@@ -34,7 +35,7 @@ export default function ExtraFun() {
             onClick={() => setCard(null)}
             className="text-[11px] text-purple-400 underline pt-1"
           >
-            Pesca un'altra carta
+            Pesca un&apos;altra carta
           </button>
         </div>
       ) : (
@@ -45,6 +46,10 @@ export default function ExtraFun() {
           ✨ Pesca la Carta della Giornata
         </button>
       )}
+
+      <div className="pt-3 border-t border-slate-800">
+        <LegendsQuiz />
+      </div>
     </div>
   );
 }
