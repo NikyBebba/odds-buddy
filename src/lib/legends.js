@@ -28,8 +28,8 @@ export const LEGENDS_QUESTIONS = [
   {
     q: 'Qual è stato l\'ultimo club italiano a vincere la Champions League?',
     options: ['Inter', 'Juventus', 'Milan', 'Roma'],
-    correct: 0,
-    fun: 'L\'Inter di Simone Inzaghi ha alzato la coppa a Istanbul nel 2023, battendo il Manchester City in finale.',
+    correct: 3,
+    fun: 'L\'Inter di José Mourinho: 2-0 al Bayern a Madrid nel 2010, doppietta di Milito e triplete. A Istanbul nel 2023 ci è arrivata in finale, ma l\'ha persa col Manchester City (0-1, gol di Rodri).',
   },
   {
     q: 'Chi ha vinto il Pallone d\'Oro nel 2005?',
@@ -44,10 +44,10 @@ export const LEGENDS_QUESTIONS = [
     fun: 'Nel 2018 i francesi alzarono la coppa: Mbappé aveva 19 anni e il mondo lo guardava.',
   },
   {
-    q: 'Quante volte l\'Italia vince i Mondiali del 2006?',
+    q: 'Quante volte l\'Italia ha vinto il Mondiale?',
     options: ['1', '2', '3', '4'],
-    correct: 0,
-    fun: 'Una, ma che una: Zidane ha salutato con la testata a Materazzi. La coppa è tornata a casa.',
+    correct: 3,
+    fun: 'Quattro: 1934, 1938, 1982 e 2006. L\'ultima a Berlino: Zidane ha salutato con la testata a Materazzi e la coppa è tornata a casa.',
   },
   {
     q: 'Quale calciatore ha vinto più Palloni d\'Oro nella storia?',
@@ -56,7 +56,7 @@ export const LEGENDS_QUESTIONS = [
     fun: 'Messi ha collezionato un record di Palloni d\'Oro che sembra un numero di telefono.',
   },
   {
-    q: 'Chi ha segnato il gol del secolo (definito così dalla FIFA, gol di Maradona nel 1986)?',
+    q: 'La FIFA l\'ha eletto "Gol del Secolo": un gol segnato ai Mondiali del 1986. Di chi era?',
     options: ['Maradona', 'Pelé', 'Messi', 'Cruyff'],
     correct: 0,
     fun: 'Il dribbling contro l\'Inghilterra ai quarti del 1986: il campo di Longo era la sua abitazione personale.',
