@@ -46,7 +46,8 @@ async function upstashFetch(cfg, path, init) {
   return res.json();
 }
 
-export async function getJSON(key) {
+export async function getJSON(rawKey) {
+  const key = `v2:${rawKey}`;
   const cfg = kvConfig();
   if (!cfg) return memGet(key);
   try {
@@ -59,7 +60,8 @@ export async function getJSON(key) {
   }
 }
 
-export async function setJSON(key, value, ttlSeconds = 3600) {
+export async function setJSON(rawKey, value, ttlSeconds = 3600) {
+  const key = `v2:${rawKey}`;
   const json = JSON.stringify(value);
   const cfg = kvConfig();
   if (!cfg) {
@@ -67,10 +69,14 @@ export async function setJSON(key, value, ttlSeconds = 3600) {
     return;
   }
   try {
-    await upstashFetch(cfg, `/set/${encodeURIComponent(key)}`, {
+    // Semantica Upstash REST (verificata empiricamente): il valore è il body crudo,
+    // il TTL va nella query (?EX=...). Un body {value, ex} verrebbe salvato per intero
+    // e senza scadenza.
+    const ttlQuery = ttlSeconds ? `?EX=${ttlSeconds}` : '';
+    await upstashFetch(cfg, `/set/${encodeURIComponent(key)}${ttlQuery}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ value: json, ex: ttlSeconds }),
+      body: json,
     });
   } catch {
     memSet(key, json, ttlSeconds);
