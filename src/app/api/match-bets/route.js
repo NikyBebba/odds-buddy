@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { getJSON, setJSON } from '@/lib/kv';
 import {
   resolveApiFootballId,
   getHeadToHead,
@@ -7,9 +8,8 @@ import {
   extractAveragedOdds,
 } from '@/lib/api-football';
 
-// Cache in-memory: matchId → { ts, data } per non consumare la quota api-football
-const cache = new Map();
-const CACHE_TTL_MS = 60 * 60 * 1000; // 1 ora
+// Cache persistente delle quote: 1 ora
+const CACHE_TTL_S = 60 * 60;
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
@@ -23,10 +23,10 @@ export async function GET(request) {
     return NextResponse.json({ success: false, error: 'Parametri homeId e awayId obbligatori.' }, { status: 400 });
   }
 
-  if (matchId && cache.has(matchId)) {
-    const entry = cache.get(matchId);
-    if (Date.now() - entry.ts < CACHE_TTL_MS) {
-      return NextResponse.json(entry.data);
+  if (matchId) {
+    const cached = await getJSON(`odds:${matchId}`);
+    if (cached) {
+      return NextResponse.json(cached);
     }
   }
 
@@ -89,7 +89,7 @@ export async function GET(request) {
       predictions: predictionInfo,
     };
 
-    if (matchId) cache.set(matchId, { ts: Date.now(), data: result });
+    if (matchId) await setJSON(`odds:${matchId}`, result, CACHE_TTL_S);
 
     return NextResponse.json(result);
   } catch (error) {

@@ -1,3 +1,5 @@
+import { getJSON, setJSON } from './kv.js';
+
 const BASE = 'https://api.bigballsdata.com/v1';
 
 export const BIGBALLS_LEAGUE_CODES = {
@@ -9,8 +11,23 @@ export const BIGBALLS_LEAGUE_CODES = {
   championsLeague: 'cl',
 };
 
-const TEAM_CACHE = new Map();
-const INJURIES_CACHE = new Map();
+// Le rose di una stagione cambiano poco: 7 giorni di validità.
+async function getCachedTeams(code) {
+  return getJSON(`bb:teams:${code}`);
+}
+
+async function cacheTeams(code, teams) {
+  return setJSON(`bb:teams:${code}`, teams, 60 * 60 * 24 * 7);
+}
+
+// Gli infortuni si aggiornano spesso: massimo 6 ore di validità.
+async function getCachedInjuries(teamId) {
+  return getJSON(`bb:inj:${teamId}`);
+}
+
+async function cacheInjuries(teamId, injuries) {
+  return setJSON(`bb:inj:${teamId}`, injuries, 60 * 60 * 6);
+}
 
 function normalizeName(name = '') {
   return (name || '')
@@ -41,11 +58,12 @@ function pickRows(data) {
 export async function getTeamsForLeague(leagueKey, apiKey) {
   const code = BIGBALLS_LEAGUE_CODES[leagueKey];
   if (!code) return [];
-  if (TEAM_CACHE.has(code)) return TEAM_CACHE.get(code);
+  const cached = await getCachedTeams(code);
+  if (cached) return cached;
 
   const data = await bbFetch(`/teams?league=${code}`, apiKey);
   const teams = pickRows(data);
-  TEAM_CACHE.set(code, teams);
+  await cacheTeams(code, teams);
   return teams;
 }
 
@@ -63,10 +81,11 @@ export async function resolveTeamByName(teamName, leagueKey, apiKey) {
 
 // Infortunati di una squadra. Ritorna array di { display_name }.
 export async function getInjuriesForTeam(teamId, apiKey) {
-  if (INJURIES_CACHE.has(teamId)) return INJURIES_CACHE.get(teamId);
+  const cached = await getCachedInjuries(teamId);
+  if (cached) return cached;
   const data = await bbFetch(`/injuries?sport=football&team=${encodeURIComponent(teamId)}`, apiKey);
   const injuries = pickRows(data);
-  INJURIES_CACHE.set(teamId, injuries);
+  await cacheInjuries(teamId, injuries);
   return injuries;
 }
 

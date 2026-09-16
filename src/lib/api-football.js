@@ -1,3 +1,5 @@
+import { getJSON, setJSON } from './kv.js';
+
 const API_FOOTBALL_KEY = process.env.API_FOOTBALL_KEY || '';
 const BASE_URL = 'https://v3.football.api-sports.io';
 
@@ -26,8 +28,8 @@ const TEAM_MAP = {
   454: 517,   // Venezia FC
 };
 
-// Cache in-memory per le risoluzioni dinamiche (evita richieste ripetute)
-const searchCache = new Map();
+// Cache persistente per le risoluzioni dinamiche degli id (30 giorni)
+const resolveCacheTtl = 60 * 60 * 24 * 30;
 
 async function apiFootballFetch(path) {
   const res = await fetch(`${BASE_URL}${path}`, {
@@ -52,7 +54,9 @@ export async function resolveApiFootballId(fdTeamId, teamName) {
   const mapped = getApiFootballTeamId(fdTeamId);
   if (mapped) return mapped;
 
-  if (searchCache.has(fdTeamId)) return searchCache.get(fdTeamId);
+  const cacheKey = `af:id:${fdTeamId}`;
+  const cached = await getJSON(cacheKey);
+  if (cached !== null) return cached;
 
   const searchName = teamName
     .replace(/\b(FC|AC|CF|Calcio|AS|SS|US|SC|BC|CFC|Club)\b/gi, '')
@@ -76,7 +80,7 @@ export async function resolveApiFootballId(fdTeamId, teamName) {
     results[0];
 
   if (best) {
-    searchCache.set(fdTeamId, best.team.id);
+    await setJSON(cacheKey, best.team.id, resolveCacheTtl);
     return best.team.id;
   }
   return null;
