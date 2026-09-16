@@ -28,8 +28,8 @@ export const LEGENDS_QUESTIONS = [
   {
     q: 'Qual è stato l\'ultimo club italiano a vincere la Champions League?',
     options: ['Inter', 'Juventus', 'Milan', 'Roma'],
-    correct: 3,
-    fun: 'L\'Inter di José Mourinho: 2-0 al Bayern a Madrid nel 2010, doppietta di Milito e triplete. A Istanbul nel 2023 ci è arrivata in finale, ma l\'ha persa col Manchester City (0-1, gol di Rodri).',
+    correct: 0,
+    fun: 'L\'Inter di José Mourinho: 2-0 al Bayern a Madrid nel 2010, doppietta di Milito e triplete. La squadra più bella e forte della storia del gioco del calcio, per la madonna impestata.',
   },
   {
     q: 'Chi ha vinto il Pallone d\'Oro nel 2005?',
