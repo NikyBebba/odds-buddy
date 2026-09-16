@@ -1,15 +1,20 @@
 'use client';
 
 import { useState } from 'react';
-import { LEGENDS_QUESTIONS } from '@/lib/legends';
+import { buildTriviaDeck, gergoify } from '@/lib/trivia';
+
+const DECK_SIZE = 10;
 
 export default function LegendsQuiz() {
+  const [deck, setDeck] = useState(null);
   const [questionIdx, setQuestionIdx] = useState(null);
   const [picked, setPicked] = useState(null);
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
 
   const startQuiz = () => {
+    const d = buildTriviaDeck({ count: DECK_SIZE });
+    setDeck(d.map((q) => gergoify(q)));
     setQuestionIdx(0);
     setPicked(null);
     setScore(0);
@@ -17,7 +22,7 @@ export default function LegendsQuiz() {
   };
 
   const isOver = finished;
-  const current = questionIdx !== null && !isOver ? LEGENDS_QUESTIONS[questionIdx] : null;
+  const current = questionIdx !== null && !isOver && deck ? deck[questionIdx] : null;
 
   const pick = (idx) => {
     if (picked !== null) return;
@@ -26,7 +31,7 @@ export default function LegendsQuiz() {
   };
 
   const next = () => {
-    if (questionIdx + 1 >= LEGENDS_QUESTIONS.length) {
+    if (questionIdx + 1 >= deck.length) {
       setFinished(true);
     } else {
       setQuestionIdx((i) => i + 1);
@@ -43,7 +48,7 @@ export default function LegendsQuiz() {
       {questionIdx === null ? (
         <div className="space-y-2">
           <p className="text-xs text-slate-400">
-            Test vero da enciclopedia: fatti storici del calcio mondiale, zero dati inventati. Riesci a fare il pieno?
+            Test vero da enciclopedia: fatti storici del calcio mondiale, zero dati inventati. Ogni volta le carte sono mischiate a nuovo. Riesci a fare il pieno?
           </p>
           <button
             onClick={startQuiz}
@@ -55,13 +60,13 @@ export default function LegendsQuiz() {
       ) : isOver ? (
         <div className="space-y-2">
           <p className="text-lg font-extrabold text-amber-300">
-            {score === LEGENDS_QUESTIONS.length
-              ? `🏆 PERFETTO! ${score}/${LEGENDS_QUESTIONS.length} — sei un'enciclopedia ambulante!`
-              : score >= LEGENDS_QUESTIONS.length * 0.7
-                ? `🔥 Gran risultato! ${score}/${LEGENDS_QUESTIONS.length}`
-                : score >= LEGENDS_QUESTIONS.length * 0.4
-                  ? `🙃 Passabile: ${score}/${LEGENDS_QUESTIONS.length}. La ruota gira anche così.`
-                  : `💀 ${score}/${LEGENDS_QUESTIONS.length}: pura ciucciata storica. Ricarica di capperini!`}
+            {score === DECK_SIZE
+              ? `🏆 PERFETTO! ${score}/${DECK_SIZE} — sei un'enciclopedia ambulante!`
+              : score >= DECK_SIZE * 0.7
+                ? `🔥 Gran risultato! ${score}/${DECK_SIZE}`
+                : score >= DECK_SIZE * 0.4
+                  ? `🙃 Passabile: ${score}/${DECK_SIZE}. La ruota gira anche così.`
+                  : `💀 ${score}/${DECK_SIZE}: pura ciucciata storica. Ricarica di capperini!`}
           </p>
           <button
             onClick={startQuiz}
@@ -73,7 +78,9 @@ export default function LegendsQuiz() {
       ) : (
         <div className="space-y-3">
           <div className="flex justify-between items-center text-[11px] text-slate-500 font-mono">
-            <span>Domanda {questionIdx + 1}/{LEGENDS_QUESTIONS.length}</span>
+            <span>
+              Domanda {questionIdx + 1}/{deck.length}
+            </span>
             <span className="text-amber-400 font-bold">Punti: {score}</span>
           </div>
           <p className="text-xs font-bold text-slate-200 leading-relaxed">{current.q}</p>
@@ -106,7 +113,7 @@ export default function LegendsQuiz() {
                 onClick={next}
                 className="w-full mt-2 bg-amber-600 text-slate-950 font-extrabold py-1.5 rounded-lg text-[11px] transition-all"
               >
-                {questionIdx + 1 >= LEGENDS_QUESTIONS.length ? '🏁 Vedi il Verdetto' : '➡️ Prossima Domanda'}
+                {questionIdx + 1 >= deck.length ? '🏁 Vedi il Verdetto' : '➡️ Prossima Domanda'}
               </button>
             </div>
           )}
